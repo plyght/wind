@@ -1,0 +1,12 @@
+[package]
+name = "wind-collab"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+wind-core = { path = "../wind-core" }
+anyhow = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

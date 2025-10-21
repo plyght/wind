@@ -1,0 +1,9 @@
+[package]
+name = "wind-git"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+git2.workspace = true
+thiserror.workspace = true
