@@ -2,6 +2,7 @@ use anyhow::Result;
 use colored::Colorize;
 use indicatif::{ProgressBar, ProgressStyle};
 use std::path::PathBuf;
+use wind_core::UnifiedRepository;
 
 pub async fn execute(path: Option<String>) -> Result<()> {
     let target_path = path.unwrap_or_else(|| ".".to_string());
@@ -15,7 +16,7 @@ pub async fn execute(path: Option<String>) -> Result<()> {
     pb.enable_steady_tick(std::time::Duration::from_millis(100));
 
     let path = PathBuf::from(&target_path);
-    wind_core::repository::Repository::init(&path)?;
+    UnifiedRepository::init(path)?;
 
     pb.finish_with_message(format!(
         "{} Initialized Wind repository in {}",

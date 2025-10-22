@@ -1,57 +1,91 @@
 use anyhow::Result;
 use colored::Colorize;
+use wind_core::{UnifiedRepository, FileChange, FileStatus};
 
 pub async fn execute() -> Result<()> {
-    let repo = wind_core::repository::Repository::open(".")?;
-    let status = repo.status()?;
-
-    println!("{}", "On branch".bold());
-    println!("  {}", status.branch.green());
-
-    if status.is_worktree {
-        println!("{}", "  (worktree)".cyan());
-    }
-
-    if !status.submodules.is_empty() {
-        println!("\n{}", "Submodules:".cyan().bold());
-        for sub in &status.submodules {
-            let status_str = if sub.initialized {
-                "initialized".green()
-            } else {
-                "not initialized".yellow()
-            };
-            println!(
-                "  {} {} ({})",
-                sub.name.cyan(),
-                sub.path.display(),
-                status_str
-            );
+    let current_dir = std::env::current_dir()?;
+    
+    if !current_dir.join(".wind").exists() {
+        if current_dir.join(".git").exists() {
+            println!("{}", "Git repository detected. Use 'wind import-git .' to import.".yellow());
+            return Ok(());
+        } else {
+            anyhow::bail!("Not a Wind repository");
         }
     }
 
-    if !status.staged.is_empty() {
-        println!("\n{}", "Changes to be committed:".green().bold());
-        for file in &status.staged {
-            println!("  {} {}", "modified:".green(), file);
+    let repo = UnifiedRepository::open(current_dir)?;
+    let changes = repo.status()?;
+
+    if changes.is_empty() {
+        println!("{}", "nothing to commit, working tree clean".dimmed());
+        return Ok(());
+    }
+
+    println!("{}", "On branch main".bold());
+    println!();
+
+    let mut added = Vec::new();
+    let mut modified = Vec::new();
+    let mut deleted = Vec::new();
+    let mut renamed = Vec::new();
+    let mut untracked = Vec::new();
+
+    for change in changes {
+        match change.status {
+            FileStatus::Added => added.push(change),
+            FileStatus::Modified => modified.push(change),
+            FileStatus::Deleted => deleted.push(change),
+            FileStatus::Renamed { .. } => renamed.push(change),
+            FileStatus::Untracked => untracked.push(change),
         }
     }
 
-    if !status.modified.is_empty() {
-        println!("\n{}", "Changes not staged for commit:".red().bold());
-        for file in &status.modified {
-            println!("  {} {}", "modified:".red(), file);
+    if !added.is_empty() || !modified.is_empty() || !deleted.is_empty() || !renamed.is_empty() {
+        println!("{}", "Changes to be committed:".green().bold());
+        
+        for change in &renamed {
+            if let FileStatus::Renamed { ref from, ref to } = change.status {
+                let node_id = change.node_id.as_deref().unwrap_or("unknown");
+                println!("  renamed:    {} -> {} (NodeID: {})", 
+                    from.display().to_string().dimmed(), 
+                    to.display().to_string().green(),
+                    &node_id[..8].bright_blue());
+            }
         }
+        
+        for change in &modified {
+            let node_id = change.node_id.as_deref().unwrap_or("unknown");
+            println!("  modified:   {} (NodeID: {})", 
+                change.path.display().to_string().yellow(),
+                &node_id[..8].bright_blue());
+        }
+        
+        for change in &added {
+            let node_id = change.node_id.as_deref().unwrap_or("unknown");
+            println!("  new file:   {} (NodeID: {})", 
+                change.path.display().to_string().green(),
+                &node_id[..8].bright_blue());
+        }
+        
+        for change in &deleted {
+            let node_id = change.node_id.as_deref().unwrap_or("unknown");
+            println!("  deleted:    {} (NodeID: {})", 
+                change.path.display().to_string().red(),
+                &node_id[..8].bright_blue());
+        }
+        
+        println!();
     }
 
-    if !status.untracked.is_empty() {
-        println!("\n{}", "Untracked files:".yellow().bold());
-        for file in &status.untracked {
-            println!("  {}", file.yellow());
+    if !untracked.is_empty() {
+        println!("{}", "Untracked files:".dimmed());
+        println!("  (use \"wind add <file>...\" to include in what will be committed)");
+        println!();
+        for change in &untracked {
+            println!("        {}", change.path.display().to_string().red());
         }
-    }
-
-    if status.staged.is_empty() && status.modified.is_empty() && status.untracked.is_empty() {
-        println!("\n{}", "nothing to commit, working tree clean".dimmed());
+        println!();
     }
 
     Ok(())

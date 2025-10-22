@@ -47,6 +47,21 @@ impl Repository {
         std::fs::write(path.join(".wind/config.toml"), "")?;
 
         let gitignore_path = path.join(".gitignore");
+        let windignore_path = path.join(".windignore");
+        
+        if !gitignore_path.exists() && !windignore_path.exists() {
+            let default_content = "# Wind VCS ignore file
+.wind/
+.git/
+target/
+node_modules/
+*.swp
+*.tmp
+.DS_Store
+";
+            std::fs::write(windignore_path, default_content)?;
+        }
+
         let gitignore_content = if gitignore_path.exists() {
             let existing = std::fs::read_to_string(&gitignore_path)?;
             if !existing.contains(".wind") {

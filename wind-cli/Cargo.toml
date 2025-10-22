@@ -14,6 +14,7 @@ wind-core = { path = "../wind-core" }
 wind-tui = { path = "../wind-tui" }
 wind-ai = { path = "../wind-ai" }
 wind-collab = { path = "../wind-collab" }
+wind-bridge = { path = "../wind-bridge" }
 
 tokio = { workspace = true }
 anyhow = { workspace = true }

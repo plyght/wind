@@ -1,18 +1,19 @@
 use anyhow::Result;
 use colored::Colorize;
+use std::path::PathBuf;
+use wind_core::UnifiedRepository;
 
 pub async fn execute(files: Vec<String>, all: bool) -> Result<()> {
-    let repo = wind_core::repository::Repository::open(".")?;
+    let current_dir = std::env::current_dir()?;
+    let mut repo = UnifiedRepository::open(current_dir)?;
 
     if all {
-        repo.add_all()?;
-        println!("{} Added all changes", "✓".green());
+        anyhow::bail!("--all not yet implemented, please specify files");
     } else if files.is_empty() {
         anyhow::bail!("No files specified. Use -a/--all to add all changes.");
     } else {
-        for file in &files {
-            repo.add(file)?;
-        }
+        let paths: Vec<PathBuf> = files.iter().map(PathBuf::from).collect();
+        repo.add(paths)?;
         println!("{} Added {} file(s)", "✓".green(), files.len());
     }
 

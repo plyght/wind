@@ -3,38 +3,19 @@ use anyhow::Result;
 use colored::Colorize;
 
 pub async fn execute(action: StackAction) -> Result<()> {
-    let repo = wind_core::repository::Repository::open(".")?;
-
     match action {
         StackAction::List => {
-            let stacks = wind_core::stack::list_stacks(&repo)?;
-            if stacks.is_empty() {
-                println!("{}", "No stacks found".dimmed());
-            } else {
-                for stack in stacks {
-                    println!(
-                        "{} {} ({} branches)",
-                        "→".blue(),
-                        stack.name.bold(),
-                        stack.branches.len()
-                    );
-                    for branch in &stack.branches {
-                        println!("  - {}", branch);
-                    }
-                }
-            }
+            println!("{}", "No stacks found".dimmed());
+            println!("{}", "Stack management not yet implemented for Wind VCS".yellow());
         }
         StackAction::Create { name } => {
-            wind_core::stack::create_stack(&repo, &name)?;
-            println!("{} Created stack {}", "✓".green(), name.bold());
+            println!("{}", format!("Stack creation '{}' not yet implemented", name).yellow());
         }
         StackAction::Rebase => {
-            wind_core::stack::rebase_stack(&repo)?;
-            println!("{} Rebased entire stack", "✓".green());
+            println!("{}", "Stack rebase not yet implemented".yellow());
         }
         StackAction::Land => {
-            wind_core::stack::land_stack(&repo)?;
-            println!("{} Landed stack to main", "✓".green());
+            println!("{}", "Stack landing not yet implemented".yellow());
         }
     }
 

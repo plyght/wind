@@ -118,6 +118,34 @@ enum Commands {
         #[command(subcommand)]
         action: SubmoduleAction,
     },
+
+    #[command(about = "Sync Wind with Git repository")]
+    Sync {
+        #[arg(short, long, help = "Quiet mode")]
+        quiet: bool,
+        #[arg(long, help = "Install Git hooks")]
+        install: bool,
+    },
+
+    #[command(about = "Import existing Git repository to Wind")]
+    ImportGit {
+        #[arg(help = "Path to Git repository (default: current directory)")]
+        path: Option<String>,
+    },
+
+    #[command(about = "Export Wind repository to Git")]
+    ExportGit {
+        #[arg(help = "Path for exported Git repository")]
+        path: String,
+    },
+    
+    #[command(about = "Push changes to remote (exports to Git then pushes)")]
+    Push {
+        #[arg(help = "Remote name", default_value = "origin")]
+        remote: String,
+        #[arg(help = "Branch name (defaults to current branch)")]
+        branch: Option<String>,
+    },
 }
 
 #[derive(Subcommand)]
@@ -254,8 +282,14 @@ async fn main() -> Result<()> {
         Commands::Tui => commands::tui::execute().await,
         Commands::Ai { action } => commands::ai::execute(action).await,
         Commands::Config { action } => commands::config::execute(action).await,
+        Commands::Push { remote, branch } => commands::push::execute(remote, branch).await,
         Commands::Worktree { action } => commands::worktree::execute(action).await,
         Commands::Submodule { action } => commands::submodule::execute(action).await,
+        Commands::Sync { quiet, install } => commands::sync::handle_sync(quiet, install),
+        Commands::ImportGit { path } => {
+            commands::import::execute(path.unwrap_or_else(|| ".".to_string())).await
+        }
+        Commands::ExportGit { path } => commands::export::execute(path).await,
     };
 
     if let Err(e) = result {
