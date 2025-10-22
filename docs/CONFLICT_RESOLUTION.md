@@ -2,13 +2,13 @@
 
 ## Summary
 
-Implemented interactive conflict resolution with AI assistance across wind-core, wind-cli, wind-ai, and wind-tui.
+Implemented interactive conflict resolution with AI assistance across the unified wind crate and wind-ai.
 
 ## Components Implemented
 
-### 1. wind-core Conflict API
+### 1. wind Conflict API
 
-**New File:** [`wind-core/src/conflict.rs`](wind-core/src/conflict.rs)
+**New File:** [`crates/wind/src/conflict.rs`](crates/wind/src/conflict.rs)
 
 - `ConflictResolver` - Main conflict resolution engine
 - `detect_conflicts()` - Detects all conflicted files in the repository
@@ -16,15 +16,15 @@ Implemented interactive conflict resolution with AI assistance across wind-core,
 - `apply_resolution(path, content)` - Writes resolved content to file
 - `mark_resolved(path)` - Stages the resolved file to remove conflict markers
 
-**Updated:** [`wind-core/src/repository.rs`](wind-core/src/repository.rs)
+**Updated:** [`crates/wind/src/repository.rs`](crates/wind/src/repository.rs)
 - Added wrapper methods for conflict resolution operations
 
-**Updated:** [`wind-core/src/lib.rs`](wind-core/src/lib.rs)
+**Updated:** [`crates/wind/src/lib.rs`](crates/wind/src/lib.rs)
 - Exported `ConflictResolver`, `ConflictFile`, `ConflictContent`
 
 ### 2. CLI Command: `wind resolve [file]`
 
-**New File:** [`wind-cli/src/commands/resolve.rs`](wind-cli/src/commands/resolve.rs)
+**New File:** [`crates/wind/src/bin/commands/resolve.rs`](crates/wind/src/bin/commands/resolve.rs)
 
 Interactive conflict resolution command with options:
 - `(o)` Use ours - Apply our version
@@ -40,16 +40,16 @@ Interactive conflict resolution command with options:
 - Extracts code from AI responses (handles markdown code blocks)
 - Auto-stages resolved files
 
-**Updated:** [`wind-cli/src/main.rs`](wind-cli/src/main.rs)
+**Updated:** [`crates/wind/src/bin/wind.rs`](crates/wind/src/bin/wind.rs)
 - Added `Resolve` command enum variant
 - Wired up command dispatch
 
-**Updated:** [`wind-cli/src/commands/mod.rs`](wind-cli/src/commands/mod.rs)
+**Updated:** [`crates/wind/src/bin/commands/mod.rs`](crates/wind/src/bin/commands/mod.rs)
 - Exported resolve module
 
 ### 3. TUI ConflictView
 
-**Updated:** [`wind-tui/src/state.rs`](wind-tui/src/state.rs)
+**Updated:** [`crates/wind/src/tui/state.rs`](crates/wind/src/tui/state.rs)
 
 Added conflict resolution support:
 - New `Pane::Conflicts` variant

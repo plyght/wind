@@ -2,21 +2,21 @@
 
 ## Completed Tasks
 
-### 1. Status Caching (wind-core/src/cache.rs) ✅
+### 1. Status Caching (crates/wind/src/cache.rs) ✅
 - `StatusCache`: Thread-safe cache with timestamp-based TTL
 - `DiffCache`: Caching for diff operations  
 - Configurable TTL (default: 1000ms)
 - Automatic invalidation on operations (add, commit, checkout, rebase)
 - Cache statistics tracking (hits/misses)
 
-### 2. Performance Configuration (wind-core/src/perf.rs) ✅
+### 2. Performance Configuration (crates/wind/src/perf.rs) ✅
 - `RepoInfo`: Analyzes repository size and file count
 - `PerfConfig`: Adaptive configuration based on repo size
 - Large repo detection (>10k files or >1GB)
 - Auto-adjusts: cache TTL, auto-refresh, untracked scanning, diff context
 - Warns users when large repo detected
 
-### 3. Repository Integration (wind-core/src/repository.rs) ✅
+### 3. Repository Integration (crates/wind/src/repository.rs) ✅
 - Integrated `StatusCache` and `PerfConfig` into `Repository` struct
 - Modified `status()` to use cache with pathspec exclusions
 - Added `invalidate_cache()` for explicit cache clearing
@@ -31,7 +31,7 @@
   - `exclude_submodules(true)`: Always excluded
   - Path exclusions: `.wind/`, `target/`, `node_modules/`
 
-### 5. Lazy Loading (wind-tui/src/lazy_list.rs) ✅
+### 5. Lazy Loading (crates/wind/src/tui/lazy_list.rs) ✅
 - `LazyList<T>`: Virtual scrolling container
   - Viewport-based rendering
   - Efficient selection management
@@ -41,7 +41,7 @@
   - Automatic "load more" detection
   - Loading state management
 
-### 6. Benchmarks (wind-core/benches/perf_benchmarks.rs) ✅
+### 6. Benchmarks (crates/wind/benches/perf_benchmarks.rs) ✅
 - Criterion-based benchmark suite
 - Tests:
   - `status_10_files`: Small repo
@@ -50,7 +50,7 @@
   - `status_cached`: Cache hit performance
   - `log_paginated_20`: Paginated log
   - `diff_small_file`: Diff generation
-- Run with: `cargo bench --package wind-core`
+- Run with: `cargo bench --package wind --bench perf_benchmarks`
 
 ### 7. Documentation ✅
 - `PERFORMANCE.md`: Complete optimization guide
@@ -151,12 +151,12 @@ let diff = repo.get_diff("file.rs", context_lines: 1)?;
 
 ### Unit Tests
 ```bash
-cargo test --package wind-core --lib
+cargo test --package wind --lib
 ```
 
 ### Benchmarks
 ```bash
-cargo bench --package wind-core
+cargo bench --package wind --bench perf_benchmarks
 firefox target/criterion/report/index.html
 ```
 
@@ -185,18 +185,18 @@ cargo test --all
 ## Files Changed
 
 ### New Files
-- `wind-core/src/cache.rs` - Cache layer
-- `wind-core/src/perf.rs` - Performance analysis and config
-- `wind-tui/src/lazy_list.rs` - Lazy loading primitives
-- `wind-core/benches/perf_benchmarks.rs` - Benchmark suite
+- `crates/wind/src/cache.rs` - Cache layer
+- `crates/wind/src/perf.rs` - Performance analysis and config
+- `crates/wind/src/tui/lazy_list.rs` - Lazy loading primitives
+- `crates/wind/benches/perf_benchmarks.rs` - Benchmark suite
 - `PERFORMANCE.md` - Optimization guide
 - `BENCHMARKS.md` - Benchmark documentation
 
 ### Modified Files
-- `wind-core/src/lib.rs` - Export new modules
-- `wind-core/src/repository.rs` - Integrate caching and optimization
-- `wind-core/Cargo.toml` - Add criterion dev-dependency
-- `wind-tui/src/lib.rs` - Export lazy_list module
+- `crates/wind/src/lib.rs` - Export new modules
+- `crates/wind/src/repository.rs` - Integrate caching and optimization
+- `crates/wind/Cargo.toml` - Add criterion dev-dependency
+- `crates/wind/src/tui/mod.rs` - Export lazy_list module
 
 ## Verification
 

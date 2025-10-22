@@ -8,13 +8,13 @@ Wind includes automatic file watching capability for TUI auto-refresh. The syste
 
 ### Components
 
-1. **FileWatcher** (`wind-core/src/watcher.rs`)
+1. **FileWatcher** (`crates/wind/src/watcher.rs`)
    - Watches working directory recursively
    - Filters out `.git/` and `.wind/` changes
    - Debounces events with 300ms delay
    - Sends events via unbounded tokio channel
 
-2. **Config** (`wind-core/src/config.rs`)
+2. **Config** (`crates/wind/src/config.rs`)
    - `ui.auto_refresh` setting (default: `true`)
    - Stored in `.wind/config.toml`
 
@@ -28,7 +28,7 @@ Wind includes automatic file watching capability for TUI auto-refresh. The syste
 ### Basic Setup
 
 ```rust
-use wind_core::{Config, Repository};
+use wind::{config::Config, Repository};
 
 let repo = Repository::open(".")?;
 let config = Config::load(repo.workdir())?;
@@ -45,7 +45,7 @@ if let Some(mut watcher) = repo.watch(config.ui.auto_refresh)? {
 ### TUI Integration
 
 ```rust
-use wind_core::{Config, FileEvent, Repository};
+use wind::{config::Config, FileEvent, Repository};
 use tokio::select;
 
 pub async fn run_tui(repo: &Repository) -> Result<()> {
@@ -129,7 +129,7 @@ The watcher **processes:**
 ### Unit Tests
 
 ```bash
-cargo test --package wind-core --lib watcher
+cargo test --package wind --lib watcher
 ```
 
 Tests verify:

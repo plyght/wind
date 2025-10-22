@@ -33,7 +33,7 @@ All performance optimizations for large repositories have been successfully impl
 - 6 criterion benchmarks covering all operations
 - HTML reports with performance graphs
 - Regression detection built-in
-- Run with: `cargo bench --package wind-core`
+- Run with: `cargo bench --package wind --bench perf_benchmarks`
 
 ## Performance Numbers
 
@@ -48,18 +48,18 @@ All performance optimizations for large repositories have been successfully impl
 ## Files Implemented
 
 ### New Files
-- `wind-core/src/cache.rs` (142 lines)
-- `wind-core/src/perf.rs` (65 lines)
-- `wind-tui/src/lazy_list.rs` (141 lines)
-- `wind-core/benches/perf_benchmarks.rs` (109 lines)
+- `crates/wind/src/cache.rs` (142 lines)
+- `crates/wind/src/perf.rs` (65 lines)
+- `crates/wind/src/tui/lazy_list.rs` (141 lines)
+- `crates/wind/benches/perf_benchmarks.rs` (109 lines)
 - `PERFORMANCE.md` (full documentation)
 - `BENCHMARKS.md` (detailed results)
 
 ### Modified Files
-- `wind-core/src/lib.rs` - Export new modules
-- `wind-core/src/repository.rs` - Integrate caching
-- `wind-core/Cargo.toml` - Add criterion dependency
-- `wind-tui/src/lib.rs` - Export lazy_list
+- `crates/wind/src/lib.rs` - Export new modules
+- `crates/wind/src/repository.rs` - Integrate caching
+- `crates/wind/Cargo.toml` - Add criterion dependency
+- `crates/wind/src/tui/mod.rs` - Export lazy_list
 - `AGENTS.md` - Add bench command
 
 ## Real-World Impact
@@ -89,7 +89,7 @@ For a typical developer workflow on a 1000-file repository:
 ✅ Lazy loading structures for TUI  
 ✅ Comprehensive criterion benchmarks  
 ✅ Full documentation with examples  
-✅ wind-core compiles cleanly  
+✅ wind crate compiles cleanly  
 
 ## Conclusion
 

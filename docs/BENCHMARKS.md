@@ -3,7 +3,7 @@
 ## Running Benchmarks
 
 ```bash
-cargo bench --package wind-core
+cargo bench --package wind --bench perf_benchmarks
 ```
 
 Results will be saved to `target/criterion/` with HTML reports.
@@ -217,7 +217,7 @@ cd wind
 
 cargo build --release
 
-cargo bench --package wind-core
+cargo bench --package wind --bench perf_benchmarks
 
 firefox target/criterion/report/index.html
 ```

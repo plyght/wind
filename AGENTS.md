@@ -8,19 +8,22 @@ cargo clippy --all
 cargo fmt --all
 cargo test --all
 cargo test --test integration_tests
-cargo test --package wind-core --lib watcher  # Test file watching
-cargo bench --package wind-core                # Run performance benchmarks
+cargo test --package wind --lib watcher       # Test file watching
+cargo bench --package wind --bench perf_benchmarks  # Run performance benchmarks
 ```
 
 ## Project Structure
 
 ```
 wind/
-├── wind-cli/          # Main CLI binary
-├── wind-core/         # Core repository operations (git2)
-├── wind-tui/          # Terminal UI (stub)
-├── wind-ai/           # AI features (stub)
-└── wind-collab/       # PR/collab features (stub)
+├── crates/
+│   ├── wind/          # Combined core, CLI, and TUI
+│   ├── wind-ai/       # AI helpers (stub)
+│   ├── wind-bridge/   # Git bridge utilities
+│   ├── wind-collab/   # PR/collab features (stub)
+│   ├── wind-git/      # Git adapter layer
+│   └── wind-storage/  # Object storage primitives
+└── docs/
 ```
 
 ## CLI Commands
@@ -41,7 +44,7 @@ wind/
 
 ## Integration Tests
 
-Tests are in `wind-cli/tests/integration_tests.rs` and compare wind vs git CLI output:
+Tests are in `crates/wind/tests/integration_tests.rs` and compare wind vs git CLI output:
 - Repository initialization
 - Git compatibility
 - Round-trip operations
@@ -80,7 +83,7 @@ GitHub Actions pipeline (.github/workflows/ci.yml):
 
 Run benchmarks:
 ```bash
-cargo bench --package wind-core
+cargo bench --package wind --bench perf_benchmarks
 ```
 
 Results saved to `target/criterion/` with HTML reports at `target/criterion/report/index.html`.

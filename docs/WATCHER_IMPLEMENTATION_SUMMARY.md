@@ -6,19 +6,19 @@ Implemented automatic file watching system for TUI auto-refresh using the `notif
 
 ## Files Created
 
-1. **wind-core/src/watcher.rs** (183 lines)
+1. **crates/wind/src/watcher.rs** (183 lines)
    - `FileWatcher` struct with notify backend
    - Async event handling via tokio channels
    - 300ms debounce to prevent event spam
    - Filters `.git/` and `.wind/` changes
    - Comprehensive unit tests (4 tests, all passing)
 
-2. **wind-core/src/config.rs** (57 lines)
+2. **crates/wind/src/config.rs** (57 lines)
    - `Config` struct with TOML serialization
    - `ui.auto_refresh` setting (default: true)
    - Load/save to `.wind/config.toml`
 
-3. **wind-tui/src/example_usage.rs** (27 lines)
+3. **crates/wind/src/tui/example_usage.rs** (27 lines)
    - Example TUI integration
    - Demonstrates watcher subscription pattern
 
@@ -32,22 +32,22 @@ Implemented automatic file watching system for TUI auto-refresh using the `notif
 
 ## Files Modified
 
-1. **wind-core/src/lib.rs**
+1. **crates/wind/src/lib.rs**
    - Added `pub mod config;` and `pub mod watcher;`
    - Exported `Config`, `FileEvent`, `FileWatcher`
 
-2. **wind-core/src/repository.rs**
+2. **crates/wind/src/repository.rs**
    - Added `workdir: PathBuf` field
    - Added `watch(auto_refresh: bool) -> Result<Option<FileWatcher>>` method
    - Added `workdir() -> &Path` accessor
    - Updated `init()` and `open()` to track workdir
 
-3. **wind-core/Cargo.toml**
+3. **crates/wind/Cargo.toml**
    - Added `notify = { workspace = true }`
    - Added `toml = "0.8"`
 
 4. **AGENTS.md**
-   - Added `cargo test --package wind-core --lib watcher` to build commands
+   - Added `cargo test --package wind --lib watcher` to build commands
 
 ## Architecture
 
@@ -111,7 +111,7 @@ Implemented automatic file watching system for TUI auto-refresh using the `notif
 ### Unit Tests (4 tests, all passing)
 
 ```bash
-$ cargo test --package wind-core --lib watcher
+$ cargo test --package wind --lib watcher
 ```
 
 1. **test_file_watcher_detects_changes**
@@ -176,7 +176,7 @@ Use cases:
 ### Basic Pattern
 
 ```rust
-use wind_core::{Config, Repository};
+use wind::{config::Config, Repository};
 
 let repo = Repository::open(".")?;
 let config = Config::load(repo.workdir())?;

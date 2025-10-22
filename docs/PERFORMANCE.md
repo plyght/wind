@@ -7,7 +7,7 @@ Wind VCS includes comprehensive performance optimizations for handling large rep
 ## Status Caching
 
 ### Implementation
-- **Cache Layer**: `wind-core/src/cache.rs`
+- **Cache Layer**: `crates/wind/src/cache.rs`
 - **TTL**: Configurable (default: 1000ms, large repos: 5000ms)
 - **Invalidation**: Automatic on file changes via watcher
 - **Dirty Flag**: Marks pending operations for cache invalidation
@@ -91,7 +91,7 @@ Performance optimizations enabled:
 
 ### Running Benchmarks
 ```bash
-cargo bench --package wind-core
+cargo bench --package wind --bench perf_benchmarks
 ```
 
 ### Benchmark Suite
@@ -168,7 +168,7 @@ let diff = repo.get_diff("src/main.rs", context_lines: 3)?;
 
 ### Cache Stats
 ```rust
-use wind_core::cache::get_stats;
+use wind::cache::get_stats;
 
 let stats = get_stats()?;
 println!("Status cache hits: {}", stats.status_hits);

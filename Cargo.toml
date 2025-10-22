@@ -1,12 +1,11 @@
 [workspace]
 members = [
-    "wind-cli",
-    "wind-core",
-    "wind-git",
-    "wind-storage",
-    "wind-tui",
-    "wind-ai",
-    "wind-collab",
+    "crates/wind",
+    "crates/wind-git",
+    "crates/wind-storage",
+    "crates/wind-ai",
+    "crates/wind-collab",
+    "crates/wind-bridge",
 ]
 resolver = "2"
 

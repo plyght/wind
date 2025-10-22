@@ -8,13 +8,13 @@ Added comprehensive Git worktree and submodule support to Wind VCS with full det
 
 ### 1. Core Modules
 
-#### `wind-core/src/worktree.rs`
+#### `crates/wind/src/worktree.rs`
 - **`is_worktree(path)`**: Detects if a directory is a Git worktree by checking for `.git` file with `gitdir:` pointer
 - **`get_gitdir(path)`**: Parses `.git` file to extract the actual git directory location
 - **`list_worktrees(repo)`**: Enumerates all worktrees (main + linked) by scanning `.git/worktrees/`
 - **`is_branch_checked_out(repo, branch)`**: Safety check to prevent deleting branches actively used in worktrees
 
-#### `wind-core/src/submodule.rs`
+#### `crates/wind/src/submodule.rs`
 - **`has_submodules(repo)`**: Quick check for `.gitmodules` existence
 - **`list_submodules(repo)`**: Parses `.gitmodules` file to extract all submodule configurations
 - **`get_submodule_status(repo, submodule)`**: Returns initialization status (initialized/not initialized/missing)
@@ -22,7 +22,7 @@ Added comprehensive Git worktree and submodule support to Wind VCS with full det
 
 ### 2. Repository Integration
 
-Updated `wind-core/src/repository.rs`:
+Updated `crates/wind/src/repository.rs`:
 
 ```rust
 pub struct Status {
@@ -50,14 +50,14 @@ Added methods:
 
 ### 3. CLI Commands
 
-#### Worktree Commands (`wind-cli/src/commands/worktree.rs`)
+#### Worktree Commands (`crates/wind/src/bin/commands/worktree.rs`)
 - **`wind worktree list`**: Display all worktrees with their paths and checked-out branches
   - Shows main repo with `(main)` indicator
   - Displays branch names in green, detached state in yellow
 - **`wind worktree add <path> <branch>`**: Placeholder for adding worktrees (requires git CLI integration)
 - **`wind worktree remove <path>`**: Placeholder for removing worktrees
 
-#### Submodule Commands (`wind-cli/src/commands/submodule.rs`)
+#### Submodule Commands (`crates/wind/src/bin/commands/submodule.rs`)
 - **`wind submodule list`**: List all submodules with initialization status
 - **`wind submodule status`**: Show detailed submodule status with warnings if inside submodule
 - **`wind submodule init [name]`**: Placeholder for initializing submodules
@@ -83,13 +83,13 @@ Changes to be committed:
 
 Created comprehensive integration tests:
 
-#### `wind-core/tests/worktree_tests.rs`
+#### `crates/wind/tests/worktree_tests.rs`
 - `test_worktree_detection()`: Verifies worktree vs main repo detection
 - `test_list_worktrees()`: Tests enumeration of multiple worktrees
 - `test_branch_checked_out_protection()`: Ensures safety when deleting branches
 - `test_worktree_operations()`: End-to-end workflow with repository operations
 
-#### `wind-core/tests/submodule_tests.rs`
+#### `crates/wind/tests/submodule_tests.rs`
 - `test_submodule_detection()`: Verifies `.gitmodules` parsing
 - `test_submodule_list()`: Tests parsing multiple submodules
 - `test_submodule_status()`: Checks initialization detection
@@ -191,29 +191,24 @@ Once these integration issues are resolved, all features will be fully functiona
 
 ```bash
 # Once build issues are fixed:
-cargo test -p wind-core --test worktree_tests
-cargo test -p wind-core --test submodule_tests
+cargo test -p wind --test worktree_tests
+cargo test -p wind --test submodule_tests
 
 # Or test all
-cargo test -p wind-core
+cargo test -p wind
 ```
 
 ## Files Changed/Added
 
 ### Added
-- `wind-core/src/worktree.rs` (104 lines)
-- `wind-core/src/submodule.rs` (118 lines)
-- `wind-cli/src/commands/worktree.rs` (58 lines)
-- `wind-cli/src/commands/submodule.rs` (91 lines)
-- `wind-core/tests/worktree_tests.rs` (218 lines)
-- `wind-core/tests/submodule_tests.rs` (195 lines)
+- `crates/wind/src/worktree.rs` (104 lines)
+- `crates/wind/src/submodule.rs` (118 lines)
+- `crates/wind/src/bin/commands/worktree.rs` (58 lines)
+- `crates/wind/src/bin/commands/submodule.rs` (91 lines)
+- `crates/wind/src/bin/wind.rs`: Added Worktree and Submodule command variants
+- `crates/wind/src/bin/commands/mod.rs`: Registered new command modules
+- `crates/wind/src/bin/commands/status.rs`: Enhanced output with worktree/submodule info
 
-### Modified
-- `wind-core/src/lib.rs`: Added module exports
-- `wind-core/src/repository.rs`: Added Status fields and helper methods
-- `wind-cli/src/main.rs`: Added Worktree and Submodule command variants
-- `wind-cli/src/commands/mod.rs`: Registered new command modules
-- `wind-cli/src/commands/status.rs`: Enhanced output with worktree/submodule info
 
 ## Total Impact
 

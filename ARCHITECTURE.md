@@ -11,8 +11,8 @@ Thin wrapper around libgit2 (git2-rs) providing low-level Git operations.
 - Re-exports git2 types: Oid, Commit, Branch, Status, etc.
 - Error handling with `GitError` thiserror-based type
 
-### wind-core  
-Core Wind functionality built on top of wind-git.
+### wind  
+Combined core engine, CLI, and TUI built on top of wind-git.
 
 **Key APIs:**
 
@@ -45,7 +45,7 @@ Core Wind functionality built on top of wind-git.
 
 1. **Git Compatibility**: Full bidirectional compatibility maintained by using libgit2
 2. **Async-ready**: All Repository trait methods use `async fn` (currently sync internally)
-3. **Error Handling**: Uses anyhow::Result for wind-core, thiserror for wind-git
+3. **Error Handling**: Uses anyhow::Result for the wind crate, thiserror for wind-git
 4. **Stack Metadata**: Stored as JSON in .wind/stacks/, serialized with serde
 5. **Workspace Structure**: Cargo workspace with shared dependencies
 
@@ -53,7 +53,7 @@ Core Wind functionality built on top of wind-git.
 
 - `git2 = "0.19"`: libgit2 bindings for Git operations  
 - `tokio = "1.42"`: Async runtime (prepared for future async I/O)
-- `anyhow = "1.0"`: Error handling in wind-core
+- `anyhow = "1.0"`: Error handling in the wind crate
 - `thiserror = "2.0"`: Error types in wind-git
 - `serde/serde_json`: Stack metadata serialization
 - `notify = "6.1"`: File watching (prepared for future use)
