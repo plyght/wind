@@ -75,13 +75,14 @@ GitHub Actions pipeline (.github/workflows/ci.yml):
 - Core operations use git2-rs for Git compatibility
 - .wind directory stores metadata
 - Tests use tempfile for isolation
+
 ## Performance Benchmarks
 
 Run benchmarks:
-\`\`\`bash
+```bash
 cargo bench --package wind-core
-\`\`\`
+```
 
-Results saved to \`target/criterion/\` with HTML reports at \`target/criterion/report/index.html\`.
+Results saved to `target/criterion/` with HTML reports at `target/criterion/report/index.html`.
 
 See PERFORMANCE.md and BENCHMARKS.md for details.

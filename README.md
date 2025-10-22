@@ -4,13 +4,13 @@ A modern version control system built on Git with AI-powered features, stacked d
 
 ## Features
 
-- 🚀 **Git-Compatible**: Full interoperability with Git
-- 🤖 **AI-Powered**: Smart commit messages and code suggestions
-- 📚 **Stacked Diffs**: Manage chains of dependent branches
-- 🎨 **Beautiful TUI**: Interactive terminal interface
-- 🔄 **Smart Rebasing**: Automatic conflict resolution
-- 🔗 **PR Integration**: Direct GitHub/GitLab integration
-- ⚡ **Fast**: Optimized for large repositories
+- **Git-Compatible**: Full interoperability with Git
+- **AI-Powered**: Smart commit messages and code suggestions
+- **Stacked Diffs**: Manage chains of dependent branches
+- **Interactive TUI**: Terminal user interface
+- **Smart Rebasing**: Automatic conflict resolution
+- **PR Integration**: Direct GitHub/GitLab integration
+- **Fast**: Optimized for large repositories
 
 ## Quick Start
 
